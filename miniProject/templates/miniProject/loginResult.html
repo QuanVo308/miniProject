@@ -1,0 +1,14 @@
+<h1>Login</h1>
+{% csrf_token %}
+
+
+{%if request.user.is_authenticated %}
+<p>You are logged in as {{request.user.username}}</p>
+<form action="/home/">
+    <input type="submit" value="Back to home" />
+</form>{% else %}
+<p>Wrong username and password. You are not logged in</p>
+<form action="/home/login/">
+    <input type="submit" value="Back to login" />
+</form>
+{% endif %}

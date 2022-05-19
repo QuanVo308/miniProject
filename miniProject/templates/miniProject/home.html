@@ -1,0 +1,13 @@
+<h1>Home Page</h1>
+{% csrf_token %}
+
+<p>{{notice}}</p>
+
+{%if request.user.is_authenticated %}
+<form action="/home/logout/">
+    <input type="submit" value="LogOut" />
+</form>{% else %}
+<form action="/home/login/">
+    <input type="submit" value="login" />
+</form>
+{% endif %}

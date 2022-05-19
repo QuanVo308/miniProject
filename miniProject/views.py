@@ -2,14 +2,21 @@ from os import popen
 from django.http import HttpResponse
 from .models import SampleData
 import random
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .form import LoginForm  
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
+from django.contrib.auth.models import User
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    if request.user.is_authenticated:
+        notice = "User is logged in as: %s" % request.user.username
+        return render(request, 'miniProject/home.html', {'notice':notice})
+    else:
+        notice = "User is not logged in :("
+        return render(request, 'miniProject/home.html', {'notice':notice})
+
 
 def temp(request):
     for i in range(3000):
@@ -23,23 +30,26 @@ def temp(request):
 def login(request):
     return render(request, 'miniProject/login.html')
 
-def test(request):
+def loginAuthen(request):
 
-    if request.method == 'POST':
+    form = LoginForm(request.POST)
 
-        form = LoginForm(request.POST)
+    userLogin = authenticate(username=request.POST['username'], password=request.POST['password'])
 
-        userLogin = authenticate(username=request.POST['username'], password=request.POST['password'])
-
-        if userLogin is not None:
-            auth_login(request, userLogin)
-            print(request.session)
-            return HttpResponse("You are logged in")
-        else:
-            return HttpResponse("You are not logged in")
+    if userLogin is not None:
+        auth_login(request, userLogin)
+        return render(request, 'miniProject/loginResult.html')
+    else:
+        return render(request, 'miniProject/loginResult.html')
             
-    return HttpResponse("nothing")
 
-def testOut(request):
+def Logout(request):
     logout(request)
-    return HttpResponse("LogOut")
+    return render(request, 'miniProject/logout.html')
+
+def Register(request):
+    return render(request, 'miniProject/register.html')
+
+def registerSubmit(request):
+    user = User.objects.create_user(request.POST['username'], print(request.POST['email']), request.POST['password'])
+    return redirect('/home/login')
