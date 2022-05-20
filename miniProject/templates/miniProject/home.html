@@ -4,9 +4,21 @@
 <p>{{notice}}</p>
 
 {%if request.user.is_authenticated %}
-<form action="/home/logout/">
+<form action="/home/logout/" style="display: inline-block">
     <input type="submit" value="LogOut" />
-</form>{% else %}
+</form>
+{%if group == KTHT %}
+<form style="display: inline-block">
+    <input type="submit" value="Add" />
+</form>
+<form style="display: inline-block">
+    <input type="submit" value="Update" />
+</form>
+<form style="display: inline-block">
+    <input type="submit" value="Delete" />
+</form>
+{% endif %}
+{% else %}
 <form action="/home/login/">
     <input type="submit" value="login" />
 </form>
