@@ -6,12 +6,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .form import LoginForm  
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 
 def index(request):
     if request.user.is_authenticated:
-        notice = "User is logged in as: %s" % request.user.username
+        notice = "User is logged in as %s with a role %s %s" % (request.user.username, request.user.groups.all()[0], request.user.has_perm('miniProject.add_sampledata'))
         return render(request, 'miniProject/home.html', {'notice':notice})
     else:
         notice = "User is not logged in :("
@@ -51,5 +51,11 @@ def Register(request):
     return render(request, 'miniProject/register.html')
 
 def registerSubmit(request):
-    user = User.objects.create_user(request.POST['username'], print(request.POST['email']), request.POST['password'])
-    return redirect('/home/login')
+    try:
+        user = User.objects.create_user(request.POST['username'], request.POST['email'], request.POST['password'])
+        group = Group.objects.get(name = request.POST['accountGroup'])
+        user.save()
+        user.groups.add(group)
+        return redirect('/home/login')
+    except:
+        return render(request, "miniProject/registerResult.html")

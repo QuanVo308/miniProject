@@ -1,3 +1,4 @@
+<a href="/home">home</a>
 <form action= "{% url 'miniProject:registerSubmit' %}" method="post">
     {% csrf_token %}
     <h1>Register</h1>
@@ -11,8 +12,17 @@
     <label for="password">Password: </label>
     <input id="password" type="password" name="password" value="{{ password }}">
     <input type="submit" value="Register">
+    <br><br>
+    <label for="acountGroup">Type of account:</label>
+    <select name="accountGroup" id="accountGroup">
+      <option value="KTHT">KTHT</option>
+      <option value="CNT">CNT</option>    
+    </select>
+    <br><br>
 
 </form>
+
+  
 
 <form action="/home/login/">
     <input type="submit" value="Login" />
