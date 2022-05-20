@@ -10,17 +10,34 @@ from django.contrib.auth.models import User, Group
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.db.models import Q
+import math
 
+page = 1
 @csrf_exempt
 def index(request):
-    group = ""
+    data = SampleData.objects.filter()
+    header = ['ID', 'IP', 'Hostname','Branch', 'Zone', 'Pop', 'Type', 'Function', 'Model', 'Province', 'Total MAC', 'Smart link', 'Sep', 'Stack', 'Number of pop tail', 'patch ver', 'patch state', 'software ver', 'switch type' ]
     if request.user.is_authenticated:
         notice = "User is logged in as %s with a role %s" % (request.user.username, request.user.groups.all()[0])
         group = request.user.groups.all()[0]
-        return render(request, 'miniProject/home.html', {'notice':notice, 'group' : group})
+        max_page = math.ceil(len(data)/100)
+        max = page * 100 + 1
+        min = max - 100
+        print(page)
+        temp_data = []
+        for i in range(min, max):
+            temp_data.append(data[i])
+        return render(request, 'miniProject/home.html', {'notice':notice, 'group' : str(group), 'data' : temp_data, 'header' : header, 'maxpage':max_page, 'page':page, 'range':range(min,max)})
     else:
         notice = "User is not logged in :("
-        return render(request, 'miniProject/home.html', {'notice':notice, 'group' : group})
+        return render(request, 'miniProject/home.html', {'notice':notice, 'group' : "group", 'data' : data, 'header':header, 'maxpage':0, 'page':page, 'range': 0})
+
+def change_page(request):
+    global page
+    print(request.GET['page'])
+    page = int(request.GET['page'])
+    return redirect('/home')
+
 
 
 def temp(request):
@@ -37,8 +54,6 @@ def login(request):
 
 def login_authen(request):
 
-    form = LoginForm(request.POST)
-
     userLogin = authenticate(username=request.POST['username'], password=request.POST['password'])
 
     if userLogin is not None:
@@ -49,6 +64,8 @@ def login_authen(request):
             
 
 def logout(request):
+    global page
+    page = 1
     auth_logout(request)
     return render(request, 'miniProject/logout.html')
 
@@ -78,3 +95,69 @@ def get_dynamic_pop_mac(request):
     data = SampleData.objects.filter(total_mac = request.GET['total_mac'], number_of_pop_tail = request.GET['number_of_pop_tail']).values()
     print(type(data))
     return JsonResponse({"data": list(data)})
+
+@csrf_exempt
+def update_data(request, _id):
+    data = SampleData.objects.get(id = _id)
+    return render(request, "miniProject/update.html",{'data':data})
+
+@csrf_exempt
+def update_submit(request, _id):
+    data = SampleData.objects.get(id = _id)
+
+    data.hostname = request.POST['hostname']
+    data.branch = request.POST['branch']
+    data.zone = request.POST['zone']
+    data.pop = request.POST['pop']
+    data.type = request.POST['type']
+    data.function = request.POST['function']
+    data.model = request.POST['model']
+    data.province = request.POST['province']
+    data.itotal_macp = request.POST['total_mac']
+    data.smart_link = request.POST['smart_link']
+    data.sep = request.POST['sep']
+    data.stack = request.POST['stack']
+    data.number_of_pop_tail = request.POST['number_of_pop_tail']
+    data.patch_ver = request.POST['patch_ver']
+    data.patch_state = request.POST['patch_state']
+    data.software_ver = request.POST['software_ver']
+    data.switch_type = request.POST['switch_type']
+
+    data.save()
+    return redirect('/home')
+
+
+@csrf_exempt
+def delete_data(request, _id):
+    data = SampleData.objects.get(id = _id)
+    data.delete()
+    return redirect('/home')
+
+@csrf_exempt
+def add_data(request):
+    return render(request, "miniProject/add.html")
+
+@csrf_exempt
+def add_submit(request):
+    data = SampleData()
+
+    data.hostname = request.POST['hostname']
+    data.branch = request.POST['branch']
+    data.zone = request.POST['zone']
+    data.pop = request.POST['pop']
+    data.type = request.POST['type']
+    data.function = request.POST['function']
+    data.model = request.POST['model']
+    data.province = request.POST['province']
+    data.itotal_macp = request.POST['total_mac']
+    data.smart_link = request.POST['smart_link']
+    data.sep = request.POST['sep']
+    data.stack = request.POST['stack']
+    data.number_of_pop_tail = request.POST['number_of_pop_tail']
+    data.patch_ver = request.POST['patch_ver']
+    data.patch_state = request.POST['patch_state']
+    data.software_ver = request.POST['software_ver']
+    data.switch_type = request.POST['switch_type']
+
+    data.save()
+    return redirect('/home')

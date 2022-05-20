@@ -1,0 +1,106 @@
+<a href="/home">home</a>
+<form action= "{% url 'miniProject:add_submit'  %}" method="post">
+    {% csrf_token %}
+    <h1>New Data</h1>
+    
+    <label for="ip">IP: </label>
+    <input id="ip" type="text" name="ip" value="{{ data.ip }}">
+    <br><br>
+
+    <label for="hostname">Hostname: </label>
+    <input id="hostname" type="text" name="hostname" value="{{ data.hostname }}">
+    <br><br>
+
+    <label for="branch">Branch: </label>
+    <input id="branch" type="text" name="branch" value="{{ data.branch }}">
+    <br><br>
+
+    <label for="Zone">Zone: </label>
+    <input id="Zone" type="number" name="zone" value="{{ data.zone }}">
+    <br><br>
+
+    <label for="pop">Pop: </label>
+    <input id="pop" type="text" name="pop" value="{{ data.pop }}">
+    <br><br>
+
+    <label for="type">Type: </label>
+    <input id="type" type="text" name="type" value="{{ data.type }}">
+    <br><br>
+
+    <label for="function">Function: </label>
+    <input id="function" type="text" name="function" value="{{ data.function }}">
+    <br><br>
+
+    <label for="model">Model: </label>
+    <input id="model" type="text" name="model" value="{{ data.model }}">
+    <br><br>
+
+    <label for="province">Province: </label>
+    <input id="province" type="text" name="province" value="{{ data.province }}">
+    <br><br>
+
+    <label for="total_mac">Total MAC: </label>
+    <input id="total_mac" type="number" name="total_mac" value="{{ data.total_mac }}">
+    <br><br>
+
+
+    <label for="smart_link">Smart Link:</label>
+    <select name="smart_link" id="smart_link">
+    {%if data.smart_link == 0 %}
+        <option value= 1>True</option>
+        <option value= 0 selected = "selected">False</option> 
+     {% else %} 
+        <option value= 1 selected = "selected">True</option>
+        <option value= 0>False</option>
+     {% endif %}
+    </select>
+    <br><br>
+
+    <label for="sep">Sep:</label>
+    <select name="sep" id="sep">
+    {%if data.sep == 0 %}
+        <option value= 1>True</option>
+        <option value= 0 selected = "selected">False</option> 
+     {% else %} 
+        <option value= 1 selected = "selected">True</option>
+        <option value= 0>False</option>
+     {% endif %}
+    </select>
+    <br><br>
+
+    <label for="stack">Stack:</label>
+    <select name="stack" id="stack">
+    {%if data.stack == 0 %}
+        <option value= 1>True</option>
+        <option value= 0 selected = "selected">False</option> 
+     {% else %} 
+        <option value= 1 selected = "selected">True</option>
+        <option value= 0>False</option>
+     {% endif %}
+    </select>
+    <br><br>
+
+    <label for="number_of_pop_tail">Number of pop tail: </label>
+    <input id="number_of_pop_tail" type="number" name="number_of_pop_tail" value="{{ data.number_of_pop_tail }}">
+    <br><br>
+
+    <label for="patch_ver">Patch version: </label>
+    <input id="patch_ver" type="text" name="patch_ver" value="{{ data.patch_ver }}">
+    <br><br>
+
+    <label for="patch_state">Patch state: </label>
+    <input id="patch_state" type="text" name="patch_state" value="{{ data.patch_state }}">
+    <br><br>
+    
+    <label for="software_ver">Software version: </label>
+    <input id="software_ver" type="text" name="software_ver" value="{{ data.software_ver }}">
+    <br><br>
+
+    <label for="switch_type">Switch type: </label>
+    <input id="switch_type" type="text" name="switch_type" value="{{ data.switch_type }}">
+    <br><br>
+
+    <input type="submit" value="Save">
+    
+
+</form>

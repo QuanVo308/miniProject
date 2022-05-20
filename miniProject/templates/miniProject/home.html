@@ -1,25 +1,121 @@
+<head>
+    <style>
+        .table {
+           text-align: center;
+           border: 1px solid black;
+           border-collapse: collapse;
+           width : 100%;
+        }
+        td,th,tr {
+           text-align: center;
+           border: 1px solid black;
+        }
+        th {
+            background-color: rgba(162, 162, 162, 0.956);
+        }
+    </style>
+</head>
 <h1>Home Page</h1>
 {% csrf_token %}
 
 <p>{{notice}}</p>
 
 {%if request.user.is_authenticated %}
-<form action="/home/logout/" style="display: inline-block">
-    <input type="submit" value="LogOut" />
+<form action="/home/changePage/" style="display: inline-block">
+
+    <label for="page">Page (1 - {{maxpage}}): </label>
+    <input id="page" type="number" name="page" value="{{page}}">
+    <input type="submit" value="Go" />
 </form>
-{%if group == KTHT %}
+
+<form action="/home/logout/" style="display: inline-block">
+
+    <input type="submit" value="Logout" />
+</form>
+<br><p>Page {{page}}</p>
+{%if group == "KTHT" %}
 <form style="display: inline-block">
     <input type="submit" value="Add" />
 </form>
-<form style="display: inline-block">
-    <input type="submit" value="Update" />
-</form>
-<form style="display: inline-block">
-    <input type="submit" value="Delete" />
-</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            {% for k in header %}
+            <th>{{k}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in data %}
+            <tr>
+                <td>{{e.id}}</td>
+                <td>{{e.ip}}</td>
+                <td>{{e.hostname}}</td>
+                <td>{{e.branch}}</td>
+                <td>{{e.zone}}</td>
+                <td>{{e.pop}}</td>
+                <td>{{e.type}}</td>
+                <td>{{e.function}}</td>
+                <td>{{e.model}}</td>
+                <td>{{e.province}}</td>
+                <td>{{e.total_mac}}</td>
+                <td>{{e.smart_link}}</td>
+                <td>{{e.sep}}</td>
+                <td>{{e.stack}}</td>
+                <td>{{e.number_of_pop_tail}}</td>
+                <td>{{e.patch_ver}}</td>
+                <td>{{e.patch_state}}</td>
+                <td>{{e.software_ver}}</td>
+                <td>{{e.switch_type}}</td>
+                <td><a href="{% url 'miniProject:update_data' e.id %}">edit</a></td>
+                <td><a href="{% url 'miniProject:delete_data' e.id %}">delete</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %} 
+
+{{data.page.id}}
+<table class="table">
+    <thead>
+        <tr>
+            {% for k in header %}
+            <th>{{k}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in data %}
+            <tr>
+                <td>{{e.id}}</td>
+                <td>{{e.ip}}</td>
+                <td>{{e.hostname}}</td>
+                <td>{{e.branch}}</td>
+                <td>{{e.zone}}</td>
+                <td>{{e.pop}}</td>
+                <td>{{e.type}}</td>
+                <td>{{e.function}}</td>
+                <td>{{e.model}}</td>
+                <td>{{e.province}}</td>
+                <td>{{e.total_mac}}</td>
+                <td>{{e.smart_link}}</td>
+                <td>{{e.sep}}</td>
+                <td>{{e.stack}}</td>
+                <td>{{e.number_of_pop_tail}}</td>
+                <td>{{e.patch_ver}}</td>
+                <td>{{e.patch_state}}</td>
+                <td>{{e.software_ver}}</td>
+                <td>{{e.switch_type}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endif %}
 {% else %}
 <form action="/home/login/">
     <input type="submit" value="login" />
 </form>
 {% endif %}
+
