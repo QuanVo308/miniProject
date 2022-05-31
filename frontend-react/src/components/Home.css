@@ -1,0 +1,13 @@
+.table {
+    text-align: center;
+    border: 1px solid black;
+    border-collapse: collapse;
+    width : 100%;
+ }
+ td,th,tr {
+    text-align: center;
+    border: 1px solid black;
+ }
+ th {
+     background-color: rgba(162, 162, 162, 0.956);
+ }

@@ -20,4 +20,5 @@ urlpatterns = [
     path('add/', views.add_data, name = "add_data"),
     path('addsubmit/', views.add_submit, name = "add_submit"),
     path('changePage/', views.change_page, name = "change_page"),
+    path('test/', views.test, name = "test"),
 ]

@@ -12,33 +12,45 @@ from django.core import serializers
 from django.db.models import Q
 import math
 
+@csrf_exempt
+def test(request):
+    data = SampleData.objects.filter(id = 780).values()
+    return JsonResponse({"record": list(data)})
+
 page = 1
+pageChange = False
 @csrf_exempt
 def index(request):
+    global pageChange
+    global page
+    if pageChange:
+        pageChange = False
+    else:
+        page = 1
     data = SampleData.objects.filter()
     header = ['ID', 'IP', 'Hostname','Branch', 'Zone', 'Pop', 'Type', 'Function', 'Model', 'Province', 'Total MAC', 'Smart link', 'Sep', 'Stack', 'Number of pop tail', 'patch ver', 'patch state', 'software ver', 'switch type' ]
     if request.user.is_authenticated:
         notice = "User is logged in as %s with a role %s" % (request.user.username, request.user.groups.all()[0])
         group = request.user.groups.all()[0]
         max_page = math.ceil(len(data)/100)
-        max = page * 100 + 1
-        min = max - 100
+        min = (page-1) * 100
+        max = (len(data)) if (min + 100 > len(data)) else min + 100
         print(page)
         temp_data = []
         for i in range(min, max):
             temp_data.append(data[i])
-        return render(request, 'miniProject/home.html', {'notice':notice, 'group' : str(group), 'data' : temp_data, 'header' : header, 'maxpage':max_page, 'page':page, 'range':range(min,max)})
+        return render(request, 'miniProject/home.html', {'notice':notice, 'group' : str(group), 'data' : temp_data, 'header' : header, 'maxpage':max_page, 'page':page})
     else:
         notice = "User is not logged in :("
-        return render(request, 'miniProject/home.html', {'notice':notice, 'group' : "group", 'data' : data, 'header':header, 'maxpage':0, 'page':page, 'range': 0})
+        return render(request, 'miniProject/home.html', {'notice':notice, 'group' : "group", 'data' : data, 'header':header, 'maxpage':0, 'page':page})
 
 def change_page(request):
     global page
+    global pageChange
     print(request.GET['page'])
+    pageChange = True
     page = int(request.GET['page'])
     return redirect('/home')
-
-
 
 def temp(request):
     for i in range(3000):
@@ -86,7 +98,7 @@ def register_submit(request):
 def get_static_pop_mac(request):
     data = SampleData.objects.filter(Q(total_mac__gte = 100) | Q(number_of_pop_tail__gte = 30)).values()
     print(type(data))
-    return JsonResponse({"data": list(data)})
+    return JsonResponse({"record": list(data)})
 
 @csrf_exempt
 def get_dynamic_pop_mac(request):
@@ -94,7 +106,7 @@ def get_dynamic_pop_mac(request):
     print(request.GET['number_of_pop_tail'])
     data = SampleData.objects.filter(total_mac = request.GET['total_mac'], number_of_pop_tail = request.GET['number_of_pop_tail']).values()
     print(type(data))
-    return JsonResponse({"data": list(data)})
+    return JsonResponse({"record": list(data)})
 
 @csrf_exempt
 def update_data(request, _id):
