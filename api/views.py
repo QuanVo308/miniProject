@@ -14,6 +14,8 @@ import json
 from rest_framework.authtoken.models import Token
 
 # Create your views here.
+records_in_page = 100
+
 @csrf_exempt
 def index(request):
     data = SampleData.objects.filter(id = 780).values()
@@ -53,14 +55,23 @@ def login(request):
         print("token key", token, request.user)
 
     return HttpResponse('ok')
+
+@csrf_exempt
+def get_all(request): 
+    data = SampleData.objects.filter().values()
+
+    max_page = math.ceil(len(data)/records_in_page)
+    page = int(request.GET['page']) if (int(request.GET['page']) < max_page) else max_page
+    min = (page-1) * records_in_page
+    max = (len(data)) if (min + records_in_page > len(data)) else min + records_in_page
+
+    temp_data = []
+    for i in range(min, max):
+        temp_data.append(data[i])
     
-    # userLogin = authenticate(username=request.GET['username'], password=request.GET['password'])
-
-    # print(request.GET['username'], request.GET['password'])
-
-    # if userLogin is not None:
-    #     auth_login(request, userLogin)
-    #     print(userLogin)
-    #     return JsonResponse({"response": "success"}) 
-    # else:
-    #     return JsonResponse({"response": "fail"}) 
+    return JsonResponse({
+        "response": "ok",
+        "max_page": max_page,
+        "page": page,
+        "record": list(temp_data),
+        })

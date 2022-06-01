@@ -1,30 +1,16 @@
 import * as React from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import "./App.css";
-import Home from "./components/Home"
-import Login from "./components/Login"
+// import Home from "./components/Home"
+import Home from "./pages/Home/Home"
+import Login from "./pages/Login/Login"
 import axios from "axios"
+import Header from './components/Header'
 
 function App() {
-
-  const test = async () => {
-    const query = { params: {
-      total_mac: 5070,
-      number_of_pop_tail: 0
-    }
-      
-    }
-    const res = await axios.get("http://localhost:8000/home/get2/", query)
-    .then((res) => {
-      for(let i = 0; i < res.data.record.length; i++){
-        console.log(res.data.record[i].id)
-      }
-    })
-  }
-
-  return (
+   return (
     <div>
-      <h1><Link to="/">MiniProject</Link></h1>
+      <Header></Header>
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Login />} />

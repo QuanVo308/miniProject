@@ -2,34 +2,33 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Table } from 'antd'; 
 import axios from 'axios'
 import { ColumnsType } from 'antd/es/table';
-import "./Home.css"
+import styles from "./Home.module.css"
 import { useState, useEffect } from 'react';
+import dataService from '../../services/data.service';
 
 const Home = () => {
     const [data, setData] = useState()
+    const [page, setPage] = useState(1)
+    const [maxPage, setMaxPage] = useState(1)
     const location = useLocation()
+    let navigate = useNavigate()
+    
+
+    let props = {data, setData, location, navigate, page, setPage, maxPage, setMaxPage}
 
      useEffect( () => {
-        const query = { params: {
-            total_mac: 119,
-            number_of_pop_tail: 0
-        }
-            
-        }
-        const res = axios.get("http://localhost:8000/home/get2/", query)
-        .then((res) => {
-        setData(res.data.record);
-        })
+        setPage(1)
+        dataService.mockData(props)
      }, [])
 
-    let navigate = useNavigate()
 
     const clickHandler = (e) => {
         console.log(e.target.value)
         navigate(e.target.value)
     }
 
-    const headers = ['ID', 'IP', 'Hostname','Branch', 'Zone', 'Pop', 'Type', 'Function', 'Model', 'Province', 'Total MAC', 'Smart link', 'Sep', 'Stack', 'Number of pop tail', 'patch ver', 'patch state', 'software ver', 'switch type' ]
+    const headers = ['ID', 'IP', 'Hostname','Branch', 'Zone', 'Pop', 'Type', 'Function', 'Model', 'Province', 'Total MAC', 'Smart link', 'Sep', 'Stack', 'Number of pop tail', 'patch ver', 'patch state', 'software ver', 'switch type']
+    
     const test = async () => {
         const query = { params: {
           total_mac: 119,
@@ -45,14 +44,19 @@ const Home = () => {
         })
     }
     const test2 = () => {
-        test().then( (data) => {
-            console.log(data)
+        axios.get("http://localhost:8000/api/getdata", {
+            params: {
+                page: 7
+            }
+        })
+        .then( (res) => {
+            console.log(res.data.max_page)
         })
     }
 
     return (
         <>
-            <table className='table'>
+            <table className={styles.table}>
                 <thead>
                     <tr>
                         {headers.map( (header) => {
@@ -66,7 +70,6 @@ const Home = () => {
                             {Object.keys(record).map( (k) => {
                                 return <td>{String(record[k])}</td>
                             })}
-                            {/* <td>{record.sep}</td>      */}
                         </tr>
                     })}
                 </tbody>
