@@ -24,12 +24,13 @@ function App() {
 
   return (
     <div>
-      <h1>Mini Project</h1>
+      <h1><Link to="/">MiniProject</Link></h1>
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Login />} />
       </Routes>
-      <button onClick={test}>test</button>
+      <br></br>
+      <br></br>
     </div>
   );
 }
