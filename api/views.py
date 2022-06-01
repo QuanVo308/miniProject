@@ -23,7 +23,7 @@ def index(request):
 
 @csrf_exempt
 def test(request):
-    print(request.POST)
+    print(request.GET)
     # print(request.POST['name'])
     data = json.loads(request.body.decode('utf-8'))
     print(data)

@@ -6,14 +6,18 @@ import Home from "./pages/Home/Home"
 import Login from "./pages/Login/Login"
 import axios from "axios"
 import Header from './components/Header'
+import { useState, useEffect } from 'react';
 
 function App() {
-   return (
+  const [user, setUser] = useState()
+
+
+  return (
     <div>
-      <Header></Header>
+      <Header user={user} setUser={setUser}></Header>
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home user={user} setUser={setUser}/>} />
+        <Route path="/login" element={<Login user={user} setUser={setUser}/>} />
       </Routes>
       <br></br>
       <br></br>

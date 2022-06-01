@@ -1,0 +1,52 @@
+.header {
+    color: white;
+    text-decoration: none;
+    opacity: 1;
+}
+
+.login {
+    color: white;
+    opacity: 1;
+}
+
+
+.box {
+    display: inline-flex;
+    height: 30px;
+    position: absolute;
+    top: -15px;
+    left: 30px;
+}
+
+.info{
+    position: absolute;
+    display: inline-flex;
+    opacity: 1;
+    text-align: center;
+    color: white;
+    left: 87%;
+    top: 3px;
+    font-size: 20px;
+}
+
+.logout{
+    position: absolute;
+    display: inline-flex;
+    opacity: 1;
+    text-align: center;
+    color: white;
+    left: 95%;
+    top: 6px;
+    font-size: 17px;
+}
+
+.parent{
+    position: relative;
+    background-color: rgb(255, 102, 0);
+    height: 60px;
+}
+
+.uinfo{
+    color: white;
+    height: 30px;
+}

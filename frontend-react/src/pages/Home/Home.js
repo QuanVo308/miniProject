@@ -1,98 +1,105 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Table } from 'antd'; 
 import axios from 'axios'
 import { ColumnsType } from 'antd/es/table';
 import styles from "./Home.module.css"
 import { useState, useEffect } from 'react';
 import dataService from '../../services/data.service';
+import authenService from "../../services/authen.service"
+import Table from '../../components/Table'
 
-const Home = () => {
+const Home = ({user, setUser}) => {
     const [data, setData] = useState()
+    //const [user, setUser] = useState()
     const [page, setPage] = useState(1)
     const [maxPage, setMaxPage] = useState(1)
+    const [inputPage, setInputPage] = useState(1)
     const location = useLocation()
     let navigate = useNavigate()
+    let tempPage = 1
     
-
-    let props = {data, setData, location, navigate, page, setPage, maxPage, setMaxPage}
-
-     useEffect( () => {
-        setPage(1)
-        dataService.mockData(props)
-     }, [])
-
-
-    const clickHandler = (e) => {
-        console.log(e.target.value)
-        navigate(e.target.value)
-    }
-
     const headers = ['ID', 'IP', 'Hostname','Branch', 'Zone', 'Pop', 'Type', 'Function', 'Model', 'Province', 'Total MAC', 'Smart link', 'Sep', 'Stack', 'Number of pop tail', 'patch ver', 'patch state', 'software ver', 'switch type']
-    
-    const test = async () => {
-        const query = { params: {
-          total_mac: 119,
-          number_of_pop_tail: 0
+
+    let props = {data, setData, location, navigate, page, setPage, maxPage, setMaxPage, headers, tempPage}
+
+    useEffect( () => {
+        setPage(1)
+    }, [])
+
+    useEffect( () => {
+        if( page < 1){
+            setPage(1)
         }
-          
-        }
-        const res = await axios.get("http://localhost:8000/home/get2/", query)
+        dataService.getAll(props)
+
+        axios.get("http://localhost:8000/api/getuser/",  {withCredentials : true})
         .then((res) => {
-        const data = res.data.record;
-        console.log(data[0])
-        return data
+            setUser(res.data['user']) 
         })
+
+        if( page > maxPage){
+            console.log("exceed", page)
+            setPage(maxPage)
+        }
+
+     }, [page])
+
+    const change_page = (e) => {
+        e.preventDefault()
+        console.log("check", e.target[0].value)
+        console.log(e.target[0].value)
+        setPage(e.target[0].value)
     }
-    const test2 = () => {
-        axios.get("http://localhost:8000/api/getdata", {
-            params: {
-                page: 7
-            }
-        })
-        .then( (res) => {
-            console.log(res.data.max_page)
-        })
+
+    const next_page = (e) => {
+        if ( page <= maxPage){
+            setPage(page -1 + 2)
+        }
+    }
+
+    const previous_page = (e) => {
+        if( page >= 1){
+            setPage(page - 1)
+        }
+    }
+    
+    const change_input_page = (e) => {
+        if(e.target.value < 1){
+            setInputPage(1)
+        }
+        else if(e.target.value > maxPage){
+            setInputPage(maxPage)
+        } else {
+            setInputPage(e.target.value)
+        }
+        
     }
 
     return (
         <>
-            <table className={styles.table}>
-                <thead>
-                    <tr>
-                        {headers.map( (header) => {
-                            return <th key={header}>{header}</th>
-                        })}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data && data.map((record) => {
-                        return <tr>
-                            {Object.keys(record).map( (k) => {
-                                return <td>{String(record[k])}</td>
-                            })}
-                        </tr>
-                    })}
-                </tbody>
-            </table>
             <h1>
-                This is Home page
-                {location.pathname}
+                Home page {user && 'as ' + user}
             </h1>
-            <button onClick={clickHandler} value = "/login"> Login</button>
-            <button onClick={test2}> test2</button>
+            <br></br>
+            <br></br>
+            <form onSubmit={change_page}>
+                <label for="page">Page (1 - {maxPage}): </label>
+                <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page}></input>
+                <input type="submit" value="Go" />
+                <button onClick={previous_page}> Previous</button>
+                <button onClick={next_page}> Next</button>
+            </form>
+            <p>Page: {page}</p>
+            <Table headers = {headers} data = {data} ></Table>
+            <p>Page: {page}</p>
+            <form onSubmit={change_page}>
+                <label for="page">Page (1 - {maxPage}): </label>
+                <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page}></input>
+                <input type="submit" value="Go" />
+                <button onClick={previous_page}> Previous</button>
+                <button onClick={next_page}> Next</button>
+            </form>
         </>
     )
 }
 
 export default Home
-
-{/* <td>{record.id}</td>
-<td>{record.ip}</td>
-<td>{record.hostname}</td>
-<td>{record.branch}</td>
-<td>{record.zone}</td>
-<td>{record.pop}</td>
-<td>{record.type}</td>
-<td>{record.function}</td>
-<td>{record.model}</td>
-<td>{record.province}</td>  */}

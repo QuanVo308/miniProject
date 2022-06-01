@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import authenService from "../../services/authen.service"
 
-const Login = () => {
-    const [user, setUser] = useState()
+const Login = ({user, setUser}) => {
+    //const [user, setUser] = useState()
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
 
@@ -37,8 +37,8 @@ const Login = () => {
 
     return (
         <>
+            <h1>LOGIN {user && 'as ' + user}</h1>
             <form onSubmit={login}>
-                <h1>LOGIN {user && 'as ' + user}</h1>
                 <label htmlFor="username">Username: </label>
                 <input id="username" type="text" name="username" onChange={(e)=>{setUsername(e.target.value)}}></input>
                 <br></br>
@@ -56,7 +56,6 @@ const Login = () => {
             </form>
             <button onClick={authenService.getUser}> get user</button>
             <button onClick={test}> test</button>
-
         </>
     )
 }

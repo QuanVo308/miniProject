@@ -19,7 +19,15 @@ class dataService {
         })
     }
     getAll(props) {
-        axios.get("http://localhost:8000/home/get2/")
+        axios.get("http://localhost:8000/api/getdata", {
+            params: {
+                page: props.page
+            }
+        })
+        .then( (res) => {
+            props.setData(res.data.record)
+            props.setMaxPage(res.data.max_page)
+        })
     }
 }
 

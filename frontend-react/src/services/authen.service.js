@@ -20,6 +20,7 @@ class authenService {
             console.log(res.data['response'])
             props.setUser(null)
         })
+        props.navigate('/login')
     }
 
     test() {
@@ -45,7 +46,7 @@ class authenService {
             console.log("login")
             props.setUser(props.username)
         })
-        props.navigate('/login')
+        props.navigate('/')
     }
 }
 
