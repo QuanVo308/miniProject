@@ -32,9 +32,14 @@ const Register = ({user, setUser}) => {
                 <form className={styles.login_form}>
                     <input type="text" className={styles.login_input} placeholder= " Username"/>
                     <input type="password" className={styles.login_input} placeholder=" Password" />
+                    <input type="text" className={styles.login_input} placeholder=" Email" />
+                    <select name="accountGroup" id="accountGroup" placeholder="Account type" className={styles.login_input}>
+                        <option value="CNT">CNT</option>    
+                        <option value="KTHT">KTHT</option>
+                    </select>
                     <div >
                         <button type="submit" className={styles.login_button}>SIGN UP</button>
-                    </div>
+                    </div> 
                 </form>
             </section>
         </div>

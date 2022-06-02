@@ -45,14 +45,14 @@ const Home = ({user, setUser}) => {
 
     const change_page = (e) => {
         e.preventDefault()
-        console.log("check", e.target[0].value)
-        console.log(e.target[0].value)
         setPage(e.target[0].value)
     }
 
     const next_page = (e) => {
         if ( page <= maxPage){
             setPage(page -1 + 2)
+        } else {
+            
         }
     }
 
@@ -85,9 +85,9 @@ const Home = ({user, setUser}) => {
                 <label for="page">Page (1 - {maxPage}): </label>
                 <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page}></input>
                 <input type="submit" value="Go" />
+            </form>
                 <button onClick={previous_page}> Previous</button>
                 <button onClick={next_page}> Next</button>
-            </form>
             <p>Page: {page}</p>
             <button onClick={(e) => {navigate('/add')}}>Add</button>
             <Table headers = {headers} data = {data} ></Table>
@@ -96,9 +96,9 @@ const Home = ({user, setUser}) => {
                 <label for="page">Page (1 - {maxPage}): </label>
                 <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page}></input>
                 <input type="submit" value="Go" />
+            </form>
                 <button onClick={previous_page}> Previous</button>
                 <button onClick={next_page}> Next</button>
-            </form>
         </>
     )
 }
