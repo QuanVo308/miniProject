@@ -32,7 +32,9 @@ export default function Header(props) {
             <h1 className={styles.box}><Link to="/" className={styles.header}>MiniProject</Link></h1> 
 
             {props.user ? 
-            <h1 className={styles.info}>{props.user}</h1> : 
+            <h1 className={styles.info}>{props.user}</h1> : location.pathname == '/register' ? <h1 className={styles.info}>
+            <Link to="/login" className={styles.login}>Login</Link>
+            </h1> :
             location.pathname != '/login' && <h1 className={styles.info}>
                 <Link to="/login" className={styles.login}>Login</Link> / <Link to="/register" className={styles.login}>Sign Up</Link>
                 </h1>}

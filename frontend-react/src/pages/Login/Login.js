@@ -2,6 +2,7 @@ import { useLocation, useNavigate, useResolvedPath } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import authenService from "../../services/authen.service"
+import styles from "./Login.module.css"
 
 const Login = ({user, setUser}) => {
     //const [user, setUser] = useState()
@@ -34,6 +35,10 @@ const Login = ({user, setUser}) => {
     const test = async () => {
         console.log(props.username)
     }
+    
+    const naviRegister = () => {
+        navigate('/register')
+    }
 
     return (
         <>
@@ -56,6 +61,27 @@ const Login = ({user, setUser}) => {
             </form>
             <button onClick={authenService.getUser}> get user</button>
             <button onClick={test}> test</button>
+
+
+            <div className={styles.login_container}>
+            <section class={styles.logins}>
+                <header>
+                    <h2>MiniProject</h2>
+                    <h4>Login</h4>
+                </header>
+                <form className={styles.login_form}>
+                    <input type="text" className={styles.login_input} placeholder= " Username"/>
+                    <input type="password" className={styles.login_input} placeholder=" Password" />
+                    <div >
+                        <button type="submit" className={styles.login_button}>LOGIN</button>
+                    </div>
+                    <div >
+                        <label className={styles.register_noti}>Don't have an account yet?</label>
+                        <button onClick={naviRegister} className={styles.register_button}>REGISTER</button>
+                    </div>
+                </form>
+            </section>
+        </div>
         </>
     )
 }

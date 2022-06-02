@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import { ColumnsType } from 'antd/es/table';
 import styles from "./Home.module.css"
@@ -89,6 +89,7 @@ const Home = ({user, setUser}) => {
                 <button onClick={next_page}> Next</button>
             </form>
             <p>Page: {page}</p>
+            <button onClick={(e) => {navigate('/add')}}>Add</button>
             <Table headers = {headers} data = {data} ></Table>
             <p>Page: {page}</p>
             <form onSubmit={change_page}>
