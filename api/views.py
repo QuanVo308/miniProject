@@ -74,4 +74,20 @@ def get_all(request):
         "max_page": max_page,
         "page": page,
         "record": list(temp_data),
+    })
+
+@csrf_exempt
+def register(request):
+    data = json.loads(request.body.decode('utf-8'))
+    try:
+        user = User.objects.create_user(data['username'], data['email'], data['password'])
+        group = Group.objects.get(name = data['accountGroup'])
+        user.save()
+        user.groups.add(group)
+        return JsonResponse({
+            "response": "ok"
+        })
+    except:
+        return JsonResponse({
+            "response": "fail"
         })

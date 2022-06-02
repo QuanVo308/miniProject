@@ -42,7 +42,7 @@ const Login = ({user, setUser}) => {
 
     return (
         <>
-            <h1>LOGIN {user && 'as ' + user}</h1>
+            {/* <h1>LOGIN {user && 'as ' + user}</h1>
             <form onSubmit={login}>
                 <label htmlFor="username">Username: </label>
                 <input id="username" type="text" name="username" onChange={(e)=>{setUsername(e.target.value)}}></input>
@@ -60,7 +60,7 @@ const Login = ({user, setUser}) => {
                 <input type="submit" value="Logout"></input>
             </form>
             <button onClick={authenService.getUser}> get user</button>
-            <button onClick={test}> test</button>
+            <button onClick={test}> test</button> */}
 
 
             <div className={styles.login_container}>
@@ -69,11 +69,11 @@ const Login = ({user, setUser}) => {
                     <h2>MiniProject</h2>
                     <h4>Login</h4>
                 </header>
-                <form className={styles.login_form}>
-                    <input type="text" className={styles.login_input} placeholder= " Username"/>
-                    <input type="password" className={styles.login_input} placeholder=" Password" />
+                <form className={styles.login_form} onSubmit={login}>
+                    <input type="text" className={styles.login_input} placeholder= " Username" name="username" id="username" onChange={(e)=>{setUsername(e.target.value)}}/>
+                    <input type="password" className={styles.login_input} placeholder=" Password" id="password" name="password" onChange={(e)=>{setPassword(e.target.value)}} />
                     <div >
-                        <button type="submit" className={styles.login_button}>LOGIN</button>
+                        <button type="submit" className={styles.login_button} value='login'>LOGIN</button>
                     </div>
                     <div >
                         <label className={styles.register_noti}>Don't have an account yet?</label>

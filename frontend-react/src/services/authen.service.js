@@ -48,6 +48,21 @@ class authenService {
         })
         props.navigate('/')
     }
+
+
+    register(e, props) {
+        e.preventDefault()
+        console.log('login', props.username, props.password)
+        axios.post("http://localhost:8000/api/register", { 
+            username: props.username,
+            password: props.password
+        }, {withCredentials : true})
+        .then( (res) => {
+            console.log("register")
+            props.setUser(props.username)
+        })
+        props.navigate('/login')
+    }
 }
 
 
