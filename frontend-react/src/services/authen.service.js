@@ -43,10 +43,13 @@ class authenService {
             password: props.password
         }, {withCredentials : true})
         .then( (res) => {
-            console.log("login")
-            props.setUser(props.username)
+            if( res.data == 'fail'){
+                alert('Login failed')
+            } else {
+                props.navigate('/')
+                props.setUser(props.username)
+            }
         })
-        props.navigate('/')
     }
 
 
@@ -55,13 +58,20 @@ class authenService {
         console.log('login', props.username, props.password)
         axios.post("http://localhost:8000/api/register", { 
             username: props.username,
-            password: props.password
+            password: props.password,
+            accountGroup: props.type,
+            email: props.email
         }, {withCredentials : true})
         .then( (res) => {
-            console.log("register")
-            props.setUser(props.username)
+            console.log(res.data)
+            if(res.data.response == 'ok') {
+                props.setUser(props.username)
+                props.navigate('/login')
+            } else {
+                alert("register fail")
+            }
+            
         })
-        props.navigate('/login')
     }
 }
 

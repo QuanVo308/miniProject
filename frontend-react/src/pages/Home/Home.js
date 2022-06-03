@@ -9,10 +9,11 @@ import Table from '../../components/Table'
 
 const Home = ({user, setUser}) => {
     const [data, setData] = useState()
-    //const [user, setUser] = useState()
+    const [group, setGroup] = useState('none')
     const [page, setPage] = useState(1)
     const [maxPage, setMaxPage] = useState(1)
     const [inputPage, setInputPage] = useState(1)
+    const [update, setUpdate] = useState(0)
     const location = useLocation()
     let navigate = useNavigate()
     let tempPage = 1
@@ -30,18 +31,24 @@ const Home = ({user, setUser}) => {
             setPage(1)
         }
         dataService.getAll(props)
-
+        setUpdate(0)
         axios.get("http://localhost:8000/api/getuser/",  {withCredentials : true})
         .then((res) => {
             setUser(res.data['user']) 
         })
 
+        axios.get("http://localhost:8000/api/getpermission",  {withCredentials : true})
+        .then((res) => {
+            setGroup(res.data) 
+        })
+
         if( page > maxPage){
-            console.log("exceed", page)
             setPage(maxPage)
         }
 
-     }, [page])
+        setInputPage(page)
+
+     }, [page, update])
 
     const change_page = (e) => {
         e.preventDefault()
@@ -49,7 +56,8 @@ const Home = ({user, setUser}) => {
     }
 
     const next_page = (e) => {
-        if ( page <= maxPage){
+        if (page -1 + 2 <= maxPage){
+            console.log(page -1 + 2, maxPage)
             setPage(page -1 + 2)
         } else {
             
@@ -57,7 +65,7 @@ const Home = ({user, setUser}) => {
     }
 
     const previous_page = (e) => {
-        if( page >= 1){
+        if( page - 1 >= 1){
             setPage(page - 1)
         }
     }
@@ -77,28 +85,35 @@ const Home = ({user, setUser}) => {
     return (
         <>
             <h1>
-                Home page {user && 'as ' + user}
+                Home page
             </h1>
+            {user ?   
+             <>
+                {group == 'KTHT' &&  <button className={styles.add_button} onClick={(e) => {navigate('/add')}}>Add new record</button>}
+                <p className={styles.page_noti}>Page: {page}</p>
+                <button className={styles.change_button} onClick={previous_page}> {'<<'} Previous</button>
+                <button className={styles.change_button} onClick={next_page}> Next {'>>'}</button>
+                <form onSubmit={change_page} className={styles.page_form}>
+                    <label className={styles.page_noti} for="page">(1 - {maxPage}): </label>
+
+                    <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page} className={styles.page_input}></input>
+                    <button type="submit" value="Go" className={styles.change_button}>Go</button>
+            </form>
             <br></br>
             <br></br>
-            <form onSubmit={change_page}>
-                <label for="page">Page (1 - {maxPage}): </label>
-                <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page}></input>
-                <input type="submit" value="Go" />
-            </form>
-                <button onClick={previous_page}> Previous</button>
-                <button onClick={next_page}> Next</button>
-            <p>Page: {page}</p>
-            <button onClick={(e) => {navigate('/add')}}>Add</button>
-            <Table headers = {headers} data = {data} ></Table>
-            <p>Page: {page}</p>
-            <form onSubmit={change_page}>
-                <label for="page">Page (1 - {maxPage}): </label>
-                <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page}></input>
-                <input type="submit" value="Go" />
-            </form>
-                <button onClick={previous_page}> Previous</button>
-                <button onClick={next_page}> Next</button>
+            <Table headers = {headers} data = {data} group = {group}  setUpdate={setUpdate} ></Table>
+            
+                <button className={styles.change_button} onClick={previous_page}> {'<<'} Previous</button>
+                <button className={styles.change_button} onClick={next_page}> Next {'>>'}</button>
+                <form onSubmit={change_page} className={styles.page_form}>
+                    <label className={styles.page_noti} for="page">(1 - {maxPage}): </label>
+
+                    <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page} className={styles.page_input}></input>
+                    <button type="submit" value="Go" className={styles.change_button}>Go</button>
+                </form>
+                <p className={styles.page_noti}>Page: {page}</p>
+            </>  : <> You not logged in</>}
+            
         </>
     )
 }

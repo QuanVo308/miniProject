@@ -66,8 +66,7 @@ const Login = ({user, setUser}) => {
             <div className={styles.login_container}>
             <section class={styles.logins}>
                 <header>
-                    <h2>MiniProject</h2>
-                    <h4>Login</h4>
+                    <h2>Login</h2>
                 </header>
                 <form className={styles.login_form} onSubmit={login}>
                     <input type="text" className={styles.login_input} placeholder= " Username" name="username" id="username" onChange={(e)=>{setUsername(e.target.value)}}/>

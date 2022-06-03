@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home"
 import Login from "./pages/Login/Login"
 import Register from "./pages/Register/Register"
 import Addrecord from "./pages/Addrecord/Addrecord";
+import Edit from "./pages/Edit/Edit"
 import axios from "axios"
 import Header from './components/Header'
 import { useState, useEffect } from 'react';
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<Login user={user} setUser={setUser}/>} />
         <Route path="/register" element={<Register user={user} setUser={setUser}/>} />
         <Route path="/add" element={<Addrecord user={user} setUser={setUser}/>} />
+        <Route path="/edit" element={<Edit user={user} setUser={setUser}/>} />
       </Routes>
       <br></br>
       <br></br>

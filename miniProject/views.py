@@ -161,7 +161,7 @@ def add_submit(request):
     data.function = request.POST['function']
     data.model = request.POST['model']
     data.province = request.POST['province']
-    data.itotal_macp = request.POST['total_mac']
+    data.total_mac = request.POST['total_mac']
     data.smart_link = request.POST['smart_link']
     data.sep = request.POST['sep']
     data.stack = request.POST['stack']

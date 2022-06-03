@@ -7,6 +7,21 @@ import styles from "./Register.module.css"
 const Register = ({user, setUser}) => {
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
+    const [email, setEmail] = useState()
+    const [type, setType] = useState()
+    const navigate = useNavigate()
+
+    let props = {user, setUser, username, setUsername, password, setPassword, email, setEmail, type, setType, navigate}
+
+    useEffect( () => {
+        setType("CNT")
+    }, [])
+
+    const registerUser = (e) => {
+        authenService.register(e, props)
+        console.log("register base", props)
+    }
+
     return(
         <>
         {/* <h1>REGISTER</h1> 
@@ -26,14 +41,14 @@ const Register = ({user, setUser}) => {
         <div className={styles.login_container}>
             <section class={styles.logins}>
                 <header>
-                    <h2>MiniProject</h2>
-                    <h4>Sign Up</h4>
+                    <h2>Sign Up</h2>
+                    
                 </header>
-                <form className={styles.login_form}>
-                    <input type="text" className={styles.login_input} placeholder= " Username"/>
-                    <input type="password" className={styles.login_input} placeholder=" Password" />
-                    <input type="text" className={styles.login_input} placeholder=" Email" />
-                    <select name="accountGroup" id="accountGroup" placeholder="Account type" className={styles.login_input}>
+                <form className={styles.login_form} onSubmit={registerUser}>
+                    <input type="text" className={styles.login_input} placeholder= " Username" onChange={(e)=>{setUsername(e.target.value)}}/>
+                    <input type="password" className={styles.login_input} placeholder=" Password" onChange={(e)=>{setPassword(e.target.value)}}/>
+                    <input type="text" className={styles.login_input} placeholder=" Email" onChange={(e)=>{setEmail(e.target.value)}}/>
+                    <select name="accountGroup" id="accountGroup" placeholder="Account type" className={styles.login_input} onChange={(e)=>{setType(e.target.value)}}>
                         <option value="CNT">CNT</option>    
                         <option value="KTHT">KTHT</option>
                     </select>

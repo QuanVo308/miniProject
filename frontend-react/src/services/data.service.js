@@ -29,6 +29,41 @@ class dataService {
             props.setMaxPage(res.data.max_page)
         })
     }
+
+    deleteData(id, setUpdate) {
+        axios.get("http://localhost:8000/api/delete", {
+            params: {
+                id: id
+            }
+        })
+        .then( () => {
+            setUpdate(1)
+        })
+    }
+
+    addData(input, navigate) {
+        axios.post("http://localhost:8000/api/add", input)
+        .then( (res) => {
+            console.log(res.data)
+            if(res.data == 'ok'){
+                navigate('/')
+            } else {
+                alert("Fail to add new record")
+            }
+        })
+    }
+
+    updateData(input, navigate) {
+        axios.post("http://localhost:8000/api/update", input)
+        .then( (res) => {
+            console.log(res.data)
+            if(res.data == 'ok'){
+                navigate('/')
+            } else {
+                alert("Fail to update record")
+            }
+        })
+    }
 }
 
 export default new dataService()

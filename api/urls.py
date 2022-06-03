@@ -11,5 +11,9 @@ urlpatterns = [
     path('login', views.login, name='login'),
     path('test', views.test, name='test'),
     path('getdata', views.get_all, name='getData'),
-    path('register', views.register, name="register")
+    path('register', views.register, name="register"),
+    path('getpermission', views.get_permission, name='permission'),
+    path('delete', views.delete_record, name="delete"),
+    path('add', views.add_data, name="add_data"),
+    path('update', views.update_data, name="update_data"),
 ]

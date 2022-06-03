@@ -1,3 +1,4 @@
+from http.client import OK
 from miniProject.models import SampleData
 from os import popen, path
 from django.http import HttpResponse, JsonResponse
@@ -24,7 +25,7 @@ def index(request):
 @csrf_exempt
 def test(request):
     print(request.GET)
-    # print(request.POST['name'])
+    # print(new['name'])
     data = json.loads(request.body.decode('utf-8'))
     print(data)
     return HttpResponse('ok')
@@ -53,8 +54,9 @@ def login(request):
         print(userLogin)
         token = Token.objects.get_or_create(user=request.user)
         print("token key", token, request.user)
-
-    return HttpResponse('ok')
+        return HttpResponse('success')
+    else:
+        return HttpResponse('fail')
 
 @csrf_exempt
 def get_all(request): 
@@ -79,8 +81,10 @@ def get_all(request):
 @csrf_exempt
 def register(request):
     data = json.loads(request.body.decode('utf-8'))
+    print(data)
     try:
         user = User.objects.create_user(data['username'], data['email'], data['password'])
+        print(1)
         group = Group.objects.get(name = data['accountGroup'])
         user.save()
         user.groups.add(group)
@@ -91,3 +95,55 @@ def register(request):
         return JsonResponse({
             "response": "fail"
         })
+
+@csrf_exempt
+def get_permission(request):
+    if request.user.groups.all():
+        group = request.user.groups.all()[0]
+        print(request.user.groups.all()[0])
+        return HttpResponse(group)
+    return HttpResponse('unidentified')
+
+@csrf_exempt
+def delete_record(request):
+    data = SampleData.objects.filter(id = request.GET['id'])
+
+    data.delete()
+
+    return HttpResponse(OK)
+
+@csrf_exempt
+def add_data(request):
+
+    new = json.loads(request.body.decode('utf-8'))
+
+    data = SampleData()
+
+    for i in new:
+        setattr(data, i, new[i])
+
+    try:
+        data.save()
+        return HttpResponse("ok")
+    except:
+        return HttpResponse("fail")
+
+@csrf_exempt
+def update_data(request):
+
+    new = json.loads(request.body.decode('utf-8'))
+
+    data = SampleData.objects.get(id = new['id'])
+
+    print(data)
+    for i in new:
+        print(i, new[i])
+        setattr(data, i, new[i])
+        print(i, new[i])
+    
+    print("Hello")
+    try:
+        data.save()
+        return HttpResponse("ok")
+    except:
+        return HttpResponse("fail")
