@@ -4,6 +4,7 @@ import axios from 'axios'
 import authenService from "../../services/authen.service"
 import styles from "./Edit.module.css"
 import dataService from '../../services/data.service';
+import { confirmAlert } from 'react-confirm-alert'; // Import
 
 const Edit = (props) => {
 
@@ -40,6 +41,7 @@ const Edit = (props) => {
         const value = event.target.value
         setInput(inputs => ({...inputs, [name]: value}))
     }
+
 
     return (
         <>
@@ -95,8 +97,8 @@ const Edit = (props) => {
                         {location.state.smart_link == Boolean(0) ? 
                         <> <option value={0} >No</option>
                         <option value={1}>Yes</option> </> :
-                        <><option value={0}>Yes</option>
-                        <option value={1}>No</option>
+                        <><option value={1}>Yes</option>
+                        <option value={0}>No</option>
                          </>}    
                     </select>
                     <br></br>
@@ -106,8 +108,8 @@ const Edit = (props) => {
                     {location.state.sep == Boolean(0) ? 
                         <> <option value={0} >No</option>
                         <option value={1}>Yes</option> </> :
-                        <><option value={0}>Yes</option>
-                        <option value={1}>No</option>
+                        <><option value={1}>Yes</option>
+                        <option value={0}>No</option>
                          </>}    
                     </select>
                     <br></br>
@@ -117,8 +119,8 @@ const Edit = (props) => {
                     {location.state.stack == Boolean(0) ? 
                         <> <option value={0} >No</option>
                         <option value={1}>Yes</option> </> :
-                        <><option value={0}>Yes</option>
-                        <option value={1}>No</option>
+                        <><option value={1}>Yes</option>
+                        <option value={0}>No</option>
                          </>}     
                     </select>
                     <br></br>

@@ -13,9 +13,9 @@ const Addrecord = ({user, setUser}) => {
     const navigate = useNavigate()
 
     useEffect( () => {
-        setInput(inputs => ({...inputs, smart_link: Boolean(0)}))
-        setInput(inputs => ({...inputs, sep: Boolean(0)}))
-        setInput(inputs => ({...inputs, stack: Boolean(0)}))
+        setInput(inputs => ({...inputs, smart_link: 0}))
+        setInput(inputs => ({...inputs, sep: 0}))
+        setInput(inputs => ({...inputs, stack: 0}))
 
         if(!user){
             alert("You not have permission ")
@@ -94,22 +94,22 @@ const Addrecord = ({user, setUser}) => {
                     
                     <label className= {styles.login_label}>Smart Link</label>
                     <select name="smart_link" id="smart_link" className={styles.login_input} onChange={handleChange} >
-                        <option value={Boolean(0)}>No</option>
-                        <option value={Boolean(1)}>Yes</option>    
+                        <option value={0}>No</option>
+                        <option value={1}>Yes</option>    
                     </select>
                     <br></br>
 
                     <label className= {styles.login_label}>Sep</label>
                     <select name="sep" id="sep" className={styles.login_input} onChange={handleChange}>
-                        <option value={Boolean(0)}>No</option>
-                        <option value={Boolean(1)}>Yes</option>    
+                        <option value={0}>No</option>
+                        <option value={1}>Yes</option>   
                     </select>
                     <br></br>
 
                     <label className= {styles.login_label}>Stack</label>
                     <select name="stack" id="stack" className={styles.login_input} onChange={handleChange}>
-                        <option value={Boolean(0)}>No</option>
-                        <option value={Boolean(1)}>Yes</option>    
+                        <option value={0}>No</option>
+                        <option value={1}>Yes</option>    
                     </select>
                     <br></br>
 

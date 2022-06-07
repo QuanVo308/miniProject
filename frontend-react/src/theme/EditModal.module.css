@@ -1,4 +1,3 @@
-
 .login_container {
     display: flex !important;
     flex-direction: column !important;
@@ -9,9 +8,9 @@
     padding: 5px !important;
     box-sizing: border-box !important;
     position: absolute !important;
-    left: 5% !important;
-    top: 15% !important;
-    width: 1500px !important;
+    left: 20% !important;
+    top: 10% !important;
+    width: 1000px !important;
     
   }
   
@@ -26,7 +25,7 @@
     overflow: hidden !important;
     animation: input_opacity 0.2s cubic-bezier(.55, 0, .1, 1) !important;
     border-radius: 12px !important;
-    box-shadow: 10px 10px 5px lightblue !important;
+    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.426) !important;
   }
   
   .logins > header {
@@ -65,10 +64,10 @@
   
   .login_input {
     position: sticky !important;
-    width: 90% !important;
-    left: 11% !important;
-    padding: 10px 5px !important;
-    margin: 0 0 25px 0 !important;
+    width: 70% !important;
+    left: 21% !important;
+    padding: 10px 5px 0px 0px !important;
+    margin: 0 0 25px 0px !important;
     border: none !important;
     border-bottom: 2px solid rgba(0, 0, 0, 0.2) !important;
     box-sizing: border-box !important;
@@ -81,8 +80,14 @@
     transition: border-bottom 0.2s cubic-bezier(.55, 0, .1, 1) !important;
   }
   .login_label{
-    width: 120% !important;
+    display:inline-block;
+    width: 150px !important;
+    height: min-content;
     font-weight:bold !important;
+    padding-top: 10px;
+    /* background-color: aqua; */
+    text-align: left;
+    text-align: bottom;
   }
   
   .login_button{

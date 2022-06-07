@@ -6,6 +6,9 @@ import { useState, useEffect } from 'react';
 import dataService from '../../services/data.service';
 import authenService from "../../services/authen.service"
 import Table from '../../components/Table'
+import Modal from '../../components/Modal'
+import { BiFirstPage, BiLastPage } from 'react-icons/bi';
+import { AiOutlineSortAscending} from 'react-icons/ai';
 
 const Home = ({user, setUser}) => {
     const [data, setData] = useState()
@@ -14,11 +17,19 @@ const Home = ({user, setUser}) => {
     const [maxPage, setMaxPage] = useState(1)
     const [inputPage, setInputPage] = useState(1)
     const [update, setUpdate] = useState(0)
+    const [modal, setModal] = useState(false)
     const location = useLocation()
     let navigate = useNavigate()
     let tempPage = 1
     
-    const headers = ['ID', 'IP', 'Hostname','Branch', 'Zone', 'Pop', 'Type', 'Function', 'Model', 'Province', 'Total MAC', 'Smart link', 'Sep', 'Stack', 'Number of pop tail', 'patch ver', 'patch state', 'software ver', 'switch type']
+    const rheaders = ['ID', 'IP', 'Hostname','Branch', 'Zone', 'Pop', 'Type', 'Function', 'Model', 'Province', 'Total MAC', 'Smart link', 'Sep', 'Stack', 'Number of pop tail', 'patch ver', 'patch state', 'software ver', 'switch type']
+    
+    const rkeys = ['id', 'ip', 'hostname','branch', 'zone', 'pop', 'type', 'function', 'model', 'province', 'total_mac', 'smart_link', 'sep', 'stack', 'number_of_pop_tail', 'patch_ver', 'patch_state', 'software_ver', 'switch_type']
+    
+    const headers = ['ID', 'IP', 'Hostname','Branch', 'Zone', 'Pop', 'Type', 'Function', 'Model', 'Province', 'Total MAC',    'patch state', 'software ver', 'switch type']
+
+
+    const keys = ['id', 'ip', 'hostname','branch', 'zone', 'pop', 'type', 'function', 'model', 'province', 'total_mac',  'patch_state', 'software_ver', 'switch_type']
 
     let props = {data, setData, location, navigate, page, setPage, maxPage, setMaxPage, headers, tempPage}
 
@@ -50,6 +61,7 @@ const Home = ({user, setUser}) => {
 
      }, [page, update])
 
+
     const change_page = (e) => {
         e.preventDefault()
         setPage(e.target[0].value)
@@ -69,7 +81,15 @@ const Home = ({user, setUser}) => {
             setPage(page - 1)
         }
     }
+
+    const last_page = (e) => {
+        setPage(maxPage)
+    }
     
+    const first_page = (e) => {
+        setPage(1)
+    }
+
     const change_input_page = (e) => {
         if(e.target.value < 1){
             setInputPage(1)
@@ -84,36 +104,36 @@ const Home = ({user, setUser}) => {
 
     return (
         <>
-            <h1>
-                Home page
-            </h1>
+
             {user ?   
              <>
+                <h1 className={styles.title}>
+                    Record List
+                </h1>
+                <br></br>
+                <br></br>
+
+            
                 {group == 'KTHT' &&  <button className={styles.add_button} onClick={(e) => {navigate('/add')}}>Add new record</button>}
-                <p className={styles.page_noti}>Page: {page}</p>
-                <button className={styles.change_button} onClick={previous_page}> {'<<'} Previous</button>
-                <button className={styles.change_button} onClick={next_page}> Next {'>>'}</button>
+                {/* <p className={styles.page_noti}>Page: {page}</p> */}
+                <div className={styles.change_page}>
+                <button className={styles.change_button} onClick={first_page}> First</button>
+                <button className={styles.change_button} onClick={previous_page}> {'<'} Previous</button>
+                <button className={styles.change_button} onClick={next_page}> Next {'>'}</button>
+                <button className={styles.change_button} onClick={last_page}> Last {'>>'}</button>
+                
                 <form onSubmit={change_page} className={styles.page_form}>
                     <label className={styles.page_noti} for="page">(1 - {maxPage}): </label>
 
                     <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page} className={styles.page_input}></input>
                     <button type="submit" value="Go" className={styles.change_button}>Go</button>
             </form>
-            <br></br>
-            <br></br>
-            <Table headers = {headers} data = {data} group = {group}  setUpdate={setUpdate} ></Table>
-            
-                <button className={styles.change_button} onClick={previous_page}> {'<<'} Previous</button>
-                <button className={styles.change_button} onClick={next_page}> Next {'>>'}</button>
-                <form onSubmit={change_page} className={styles.page_form}>
-                    <label className={styles.page_noti} for="page">(1 - {maxPage}): </label>
+                </div>
 
-                    <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page} className={styles.page_input}></input>
-                    <button type="submit" value="Go" className={styles.change_button}>Go</button>
-                </form>
-                <p className={styles.page_noti}>Page: {page}</p>
-            </>  : <> You not logged in</>}
-            
+
+            <Table headers = {headers} data = {data} group = {group}  setUpdate={setUpdate} keys={keys} ></Table>
+            <br></br> 
+            </>  : <> <h1 className={styles.not_login}>You are not logged in</h1> <p className={styles.not_login}>Please log in to continue</p></>}
         </>
     )
 }

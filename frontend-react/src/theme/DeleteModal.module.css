@@ -9,9 +9,9 @@
     padding: 5px !important;
     box-sizing: border-box !important;
     position: absolute !important;
-    left: 5% !important;
-    top: 15% !important;
-    width: 1500px !important;
+    left: 36% !important;
+    top: 23% !important;
+    width: 500px !important;
     
   }
   
@@ -26,7 +26,7 @@
     overflow: hidden !important;
     animation: input_opacity 0.2s cubic-bezier(.55, 0, .1, 1) !important;
     border-radius: 12px !important;
-    box-shadow: 10px 10px 5px lightblue !important;
+    box-shadow: 10px 10px 5px rgba(3, 3, 3, 0.441) !important;
   }
   
   .logins > header {
@@ -64,9 +64,8 @@
   }
   
   .login_input {
-    position: sticky !important;
-    width: 90% !important;
-    left: 11% !important;
+    position: relative !important;
+    width: 100% !important;
     padding: 10px 5px !important;
     margin: 0 0 25px 0 !important;
     border: none !important;
@@ -79,10 +78,6 @@
     opacity: 1 !important;
     animation: input_opacity 0.8s cubic-bezier(.55, 0, .1, 1) !important;
     transition: border-bottom 0.2s cubic-bezier(.55, 0, .1, 1) !important;
-  }
-  .login_label{
-    width: 120% !important;
-    font-weight:bold !important;
   }
   
   .login_button{
@@ -105,6 +100,8 @@
   }
 
   .register_button{
+    position: relative;
+    left: 70%;
     padding: 10px !important;
     border: none !important;
     border-radius: 3px !important;
@@ -131,5 +128,21 @@
     opacity: 1 !important;
     animation: input_opacity 0.8s cubic-bezier(.55, 0, .1, 1) !important;
   }
-
   
+  .login_button{
+    padding: 10px !important;
+    border: none !important;
+    border-radius: 3px !important;
+    background: transparent !important;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 0.9rem !important;
+    font-weight: bold !important;
+    color: #E37F00 !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    animation: input_opacity 0.8s cubic-bezier(.55, 0, .1, 1) !important;
+  }  
+  .noti{
+      font-size: large;
+      font-weight: 500;
+  }

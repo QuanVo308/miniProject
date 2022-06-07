@@ -53,12 +53,13 @@ class dataService {
         })
     }
 
-    updateData(input, navigate) {
+    updateData(input, navigate, setUpdate) {
         axios.post("http://localhost:8000/api/update", input)
         .then( (res) => {
             console.log(res.data)
             if(res.data == 'ok'){
-                navigate('/')
+                // navigate('/')
+                setUpdate(1)
             } else {
                 alert("Fail to update record")
             }
