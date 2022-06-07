@@ -56,7 +56,7 @@ export default function Table(props) {
         // navigate('/edit', {state: data})
     } 
 
-    const setSortID = () => {
+    const setSortID = (e, header) => {
         if(ascID){
             props.data.sort( (a,b) => b.id - a.id) 
         } else {
@@ -65,11 +65,14 @@ export default function Table(props) {
         setAscID( prev => !prev)
     }
 
-    const setSortPS = () => {
+    const setSortPS = (header) => {
+        // header = String(header)
+        console.log("e ", props.keys[props.headers.indexOf(header)])
+        console.log("e ", props.data[1][props.keys[props.headers.indexOf(header)]])
         if(ascPS){
-            props.data.sort( (a,b) => a.patch_state.localeCompare(b.patch_state)) 
+            props.data.sort( (a,b) => String(a[props.keys[props.headers.indexOf(header)]]).localeCompare(String(b[props.keys[props.headers.indexOf(header)]])) )
         } else {
-            props.data.sort( (a,b) => b.patch_state.localeCompare(a.patch_state))
+            props.data.sort( (a,b) => String(b[props.keys[props.headers.indexOf(header)]]).localeCompare(String(a[props.keys[props.headers.indexOf(header)]])))
         }
         setAscPS( prev => !prev)
         console.log("ps")
@@ -104,7 +107,7 @@ export default function Table(props) {
                 <thead>
                     <tr>
                         {props.headers.map( (header) => {
-                            return <th key={header} onClick={header == 'ID' ? setSortID : header == "patch state" ? setSortPS : null }>{header} {header == "ID" ? ascID == true ? <AiOutlineSortAscending/> : <AiOutlineSortDescending/> : header == "patch state" ?  ascPS == true ? <AiOutlineSortAscending/> : <AiOutlineSortDescending/> : <></>} </th>
+                            return <th key={header} onClick={header == 'ID' ? setSortID :() => {setSortPS(header)} }>{header} {header == "ID" ? ascID == true ? <AiOutlineSortAscending/> : <AiOutlineSortDescending/> :  ascPS !== true ? <AiOutlineSortAscending/> : <AiOutlineSortDescending/> } </th>
                         })}
                         {props.group == 'KTHT' && <th key={'edit'}>Edit</th>}
                         {props.group == 'KTHT' && <th key={'delete'}>Delete</th>}
