@@ -117,7 +117,7 @@ const Home = ({user, setUser}) => {
                 {group == 'KTHT' &&  <button className={styles.add_button} onClick={(e) => {navigate('/add')}}>Add new record</button>}
                 {/* <p className={styles.page_noti}>Page: {page}</p> */}
                 <div className={styles.change_page}>
-                <button className={styles.change_button} onClick={first_page}> First</button>
+                <button className={styles.change_button} onClick={first_page}> {'<<'} First</button>
                 <button className={styles.change_button} onClick={previous_page}> {'<'} Previous</button>
                 <button className={styles.change_button} onClick={next_page}> Next {'>'}</button>
                 <button className={styles.change_button} onClick={last_page}> Last {'>>'}</button>

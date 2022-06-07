@@ -3,11 +3,13 @@ import { useLocation, useNavigate, useResolvedPath } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 import styles from "../theme/EditModal.module.css"
 import dataService from '../services/data.service';
+import { AiFillWarning} from 'react-icons/ai';
 
 const EditModal = ({ handleClose, show, children, record, update, setRecord }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
 
   const [input, setInput] = useState({})
+  const [checkIP, setCheckIP] = useState(true)
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -19,23 +21,94 @@ const EditModal = ({ handleClose, show, children, record, update, setRecord }) =
             setInput(inputs => ({...inputs, [e]: record[e]}))
             }
         )
-
+        validateIP(record['ip'])
+        
     }
 
-    }, [record])
+    }, [record, checkIP])
 
   const submit = (e) => {
     e.preventDefault()
-    dataService.updateData(input, navigate, update)
-    setInput('')
-    setRecord('')
-    handleClose()
+    if(!checkIP){
+      dataService.updateData(input, navigate, update)
+      setInput('')
+      setRecord('')
+      handleClose()
+    }
+    }
+
+    const validateOctet = (octet) => {
+      console.log("ocet", octet)
+      if(Number(octet) == 0 || Number(octet) && (Number(octet) >= 0 && Number(octet) <= 255)) {
+        
+      } else {
+        return false
+      }
+      if(octet.indexOf(' ') !== -1 || octet==''){
+        return false
+      }
+      return true;
+    }
+
+    const validateIP = (ip) => {
+      // console.log(ip.substring(3,5))
+      // console.log(ip.indexOf('.' , 3))
+      var index = 0
+      var octet = ip.indexOf('.')
+      
+      if(octet == -1){
+        return setCheckIP(true)
+      }
+
+      if(!validateOctet(ip.substring(index, octet))){
+        return setCheckIP(true)
+      }
+
+      index = octet + 1
+      octet = ip.indexOf('.', octet+1)
+
+      if(octet == -1){
+        return setCheckIP(true)
+      }
+
+      if(!validateOctet(ip.substring(index, octet))){
+        return setCheckIP(true)
+      }
+
+      index = octet + 1
+      octet = ip.indexOf('.', octet+1)
+
+      if(octet == -1){
+        return setCheckIP(true)
+      }
+
+      if(!validateOctet(ip.substring(index, octet))){
+        return setCheckIP(true)
+      }
+
+      if(!validateOctet(ip.substring(ip.length, octet + 1))){
+        return setCheckIP(true)
+      }
+
+      octet = ip.indexOf('.', octet+1)
+      console.log("check", octet)
+
+      if(octet !== -1){
+        return setCheckIP(true)
+      }
+
+      
+      return setCheckIP(false)
+
     }
 
     const handleChange = (event) => {
         const name = event.target.name
         const value = event.target.value
         setInput(inputs => ({...inputs, [name]: value}))
+        if(event.target.name == 'ip'){
+          validateIP(event.target.value)
+        }
     }
 
     const closeModal = () => {
@@ -64,7 +137,8 @@ const EditModal = ({ handleClose, show, children, record, update, setRecord }) =
                         <br></br>
 
                         <label className= {styles.login_label}>IP</label>
-                        <input type="text" name="ip" id="ip" className={styles.login_input} defaultValue={record['ip']} onChange={handleChange} />
+                        <input type="text" name="ip" id="ip" className={styles.login_input} defaultValue={record['ip']} onChange={handleChange} /> 
+                        {checkIP && <AiFillWarning style={{color:'red'}}/>}
                         <br></br>
 
                         <label className= {styles.login_label}>Hostname</label>
