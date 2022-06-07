@@ -20,12 +20,10 @@ const EditModal = ({ handleClose, show, children, record, update, setRecord }) =
         Object.keys(record).map( (e) => {
             setInput(inputs => ({...inputs, [e]: record[e]}))
             }
-        )
-        validateIP(record['ip'])
-        
+        )    
+        validateIP(record['ip']) 
     }
-
-    }, [record, checkIP])
+    }, [record])
 
   const submit = (e) => {
     e.preventDefault()
