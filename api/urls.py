@@ -16,4 +16,5 @@ urlpatterns = [
     path('delete', views.delete_record, name="delete"),
     path('add', views.add_data, name="add_data"),
     path('update', views.update_data, name="update_data"),
+    path('search', views.searchData, name="serch_data"),
 ]

@@ -24,11 +24,27 @@ def index(request):
 
 @csrf_exempt
 def test(request):
-    print(request.GET)
-    # print(new['name'])
-    data = json.loads(request.body.decode('utf-8'))
-    print(data)
-    return HttpResponse('ok')
+    search = json.loads(request.body.decode('utf-8'))
+
+    # data = SampleData.objects.get(id = new['id'])
+    s = Q()
+    # s &= Q(total_mac = 620)
+    for i in search:
+        # print(i)
+        if(search[i]):
+          s &= Q(('%s__startswith' % i, search[i]))
+
+    print(s)
+    if(s != Q()):
+        # print(SampleData.objects.filter(s).values()[:10])
+        data = SampleData.objects.filter(s).values()[:30]
+        for i in data:
+            print("Search result", i['id'])
+    # print(data)
+    return JsonResponse({
+        "response": "ok",
+        "record": list(data),
+    })
 
 @csrf_exempt
 def get_login_user(request):
@@ -147,3 +163,27 @@ def update_data(request):
         return HttpResponse("ok")
     except:
         return HttpResponse("fail")
+
+@csrf_exempt
+def searchData(request):
+    search = json.loads(request.body.decode('utf-8'))
+
+    # data = SampleData.objects.get(id = new['id'])
+    s = Q()
+    # s &= Q(total_mac = 620)
+    for i in search:
+        # print(i)
+        if(search[i]):
+          s &= Q(('%s__startswith' % i, search[i]))
+
+    print(s)
+    if(s != Q()):
+        # print(SampleData.objects.filter(s).values()[:10])
+        data = SampleData.objects.filter(s).values()[:30]
+        for i in data:
+            print("Search result", i['id'])
+    # print(data)
+    return JsonResponse({
+        "response": "ok",
+        "record": list(data),
+    })

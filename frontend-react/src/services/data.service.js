@@ -65,6 +65,20 @@ class dataService {
             }
         })
     }
+
+    searchData(input, setUpdate, setSearchData) {
+        axios.post("http://localhost:8000/api/search", input)
+        .then( (res) => {
+            console.log(res.data)
+            setSearchData(res.data.record)
+            // if(res.data == 'ok'){
+            //     // navigate('/')
+            // setUpdate(1)
+            // } else {
+            //     alert("Fail to update record")
+            // }
+        })
+    }
 }
 
 export default new dataService()

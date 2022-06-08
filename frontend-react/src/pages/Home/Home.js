@@ -9,6 +9,8 @@ import Table from '../../components/Table'
 import Modal from '../../components/Modal'
 import { BiFirstPage, BiLastPage } from 'react-icons/bi';
 import { AiOutlineSortAscending} from 'react-icons/ai';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Home = ({user, setUser}) => {
     const [data, setData] = useState()
@@ -18,6 +20,9 @@ const Home = ({user, setUser}) => {
     const [inputPage, setInputPage] = useState(1)
     const [update, setUpdate] = useState(0)
     const [modal, setModal] = useState(false)
+    const [find, setFind] = useState(false)
+    const [searchInput, setSearchInput] = useState()
+    const [searchData, setSearchData] = useState()
     const location = useLocation()
     let navigate = useNavigate()
     let tempPage = 1
@@ -42,7 +47,7 @@ const Home = ({user, setUser}) => {
             setPage(1)
         }
         dataService.getAll(props)
-        setUpdate(0)
+        
         axios.get("http://localhost:8000/api/getuser/",  {withCredentials : true})
         .then((res) => {
             setUser(res.data['user']) 
@@ -52,14 +57,18 @@ const Home = ({user, setUser}) => {
         .then((res) => {
             setGroup(res.data) 
         })
+        
+        dataService.searchData(searchInput, setUpdate, setSearchData)
+
 
         if( page > maxPage){
             setPage(maxPage)
         }
 
         setInputPage(page)
+        setUpdate(0)
 
-     }, [page, update])
+     }, [page, update, find, searchInput])
 
 
     const change_page = (e) => {
@@ -102,6 +111,25 @@ const Home = ({user, setUser}) => {
         
     }
 
+    const searchMode = () => {
+        setFind(prev => !prev)
+        setSearchInput(null)
+        setSearchData(null)
+    }
+    
+    const notify = () => {
+        toast('Wow so easy!', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+        console.log('test')
+    }
+
     return (
         <>
 
@@ -113,10 +141,12 @@ const Home = ({user, setUser}) => {
                 <br></br>
                 <br></br>
 
-            
+                <ToastContainer/>
+
+                <button onClick={searchMode} className={!find ? styles.search_button : styles.show_button}>{find ? "Show record" : "Search"}</button>
                 {group == 'KTHT' &&  <button className={styles.add_button} onClick={(e) => {navigate('/add')}}>Add new record</button>}
                 {/* <p className={styles.page_noti}>Page: {page}</p> */}
-                <div className={styles.change_page}>
+                {!find && <div className={styles.change_page}>
                 <button className={styles.change_button} onClick={first_page}> {'<<'} First</button>
                 <button className={styles.change_button} onClick={previous_page}> {'<'} Previous</button>
                 <button className={styles.change_button} onClick={next_page}> Next {'>'}</button>
@@ -128,10 +158,11 @@ const Home = ({user, setUser}) => {
                     <input id="page" type="number" name="page" value = {inputPage} onChange={change_input_page} className={styles.page_input}></input>
                     <button type="submit" value="Go" className={styles.change_button}>Go</button>
             </form>
-                </div>
+                </div> }
+                
 
 
-            <Table headers = {headers} data = {data} group = {group}  setUpdate={setUpdate} keys={keys} ></Table>
+            <Table headers = {headers} data = {find ? searchData : data} group = {group}  setUpdate={setUpdate} keys={keys} find={find} searchInput={searchInput} setSearchInput={setSearchInput} ></Table>
             <br></br> 
             </>  : <> <h1 className={styles.not_login}>You are not logged in</h1> <p className={styles.not_login}>Please log in to continue</p></>}
         </>

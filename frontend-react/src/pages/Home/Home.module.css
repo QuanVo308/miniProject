@@ -21,6 +21,7 @@
    background-color: white;
    border: 1px solid rgb(255, 102, 0);
  }
+
  th {
    background-color: rgb(255, 102, 0) !important;
    border: 1px solid rgb(255, 102, 0) !important;
@@ -135,6 +136,57 @@ input::-webkit-inner-spin-button {
  .not_login{   
     text-align: center;
  }
+
+ .search_input{
+   text-align: center;
+   min-width:50px!important;
+   max-width:90px!important;
+   left: 11% !important;
+   border: none !important;
+   /* border-bottom: 2px solid rgba(0, 0, 0, 0.2) !important; */
+   box-sizing: border-box !important;
+   background: transparent !important;
+   font-size: 1rem !important;
+   font-family: 'Roboto', sans-serif !important;
+   font-weight: 500 !important;
+   opacity: 1 !important;
+   animation: input_opacity 0.8s cubic-bezier(.55, 0, .1, 1) !important;
+   transition: border-bottom 0.2s cubic-bezier(.55, 0, .1, 1) !important;  
+}
+
+.search_button{
+   border: none !important;
+   border-radius: 3px !important;
+   background: transparent !important;
+   font-family: 'Roboto', sans-serif !important;
+   font-size: 0.9rem !important;
+   font-weight: bold !important;
+   color: #E37F00 !important;
+   cursor: pointer !important;
+   font-size: 20px !important;
+   opacity: 1 !important;
+   animation: input_opacity 0.8s cubic-bezier(.55, 0, .1, 1) !important;
+   position: absolute !important;
+   left: 46% !important;
+   top: 20% !important;
+} 
+
+.show_button{
+   border: none !important;
+   border-radius: 3px !important;
+   background: transparent !important;
+   font-family: 'Roboto', sans-serif !important;
+   font-size: 0.9rem !important;
+   font-weight: bold !important;
+   color: #E37F00 !important;
+   cursor: pointer !important;
+   font-size: 20px !important;
+   opacity: 1 !important;
+   animation: input_opacity 0.8s cubic-bezier(.55, 0, .1, 1) !important;
+   position: absolute !important;
+   left: 45% !important;
+   top: 20% !important;
+} 
 
 
  

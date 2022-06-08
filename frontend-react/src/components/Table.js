@@ -9,7 +9,8 @@ import EditModal from "./EditModal"
 import formStyles from "../theme/DeleteModal.module.css"
 import { BiFirstPage, BiLastPage } from 'react-icons/fa';
 import { AiOutlineSortAscending, AiOutlineSortDescending} from 'react-icons/ai';
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function Table(props) {
@@ -30,7 +31,8 @@ export default function Table(props) {
         setDeleteModal(false)
         // setEditData(props.data[1])
         // console.log("edit", editData.id)
-    },[editData])
+        console.log("zxc", props.find)
+    },[editData, props.find])
 
     
     const showDeleteModal = () => {
@@ -50,7 +52,7 @@ export default function Table(props) {
     }
 
     const edit = (data) => {    
-        console.log("data", data.id)
+        // console.log("data", data.id)
         setEditModal(true)
         setEditData(data)
         // navigate('/edit', {state: data})
@@ -87,7 +89,6 @@ export default function Table(props) {
             }
             setAscPS( prev => !prev)
         }
-        console.log("ps")
     }
 
     const deleteRecord = (data) => {
@@ -102,6 +103,13 @@ export default function Table(props) {
         //     dataService.deleteData(data.id, props.setUpdate)
         // }
     }
+    const handleSearch = (e) => {
+        const name = e.target.name
+        const value = e.target.value
+        props.setSearchInput(inputs => ({...inputs, [name]: value }))
+        console.log("search input",props.searchInput)
+        props.setUpdate(1)
+    }
 
 
 
@@ -114,6 +122,7 @@ export default function Table(props) {
             <EditModal show={editModal} handleClose={hideEditModal} record={editData} setRecord={setEditData} update={props.setUpdate}>
                 
             </EditModal>
+            <ToastContainer/>
         <div className={styles.test}>
         <table className={styles.table}>
                 <thead>
@@ -126,10 +135,19 @@ export default function Table(props) {
                     </tr>
                 </thead>
                 <tbody className={styles.tbody}>
+
+                    {props.find && <tr>
+                            {props.keys.map( (k) => {
+                                return <td key={k} ><input className={styles.search_input} name={k} onChange = {handleSearch}></input></td>
+                            })}
+                            <td></td>
+                            <td></td>
+                    </tr>}
+                    
                     {props.data && props.data.map((record) => {
                         return <tr>
                             {props.keys.map( (k) => {
-                                return <td key={k}>{String(record[k])}</td>
+                                return <td key={k} className={styles.tds}>{String(record[k])}</td>
                             })}
                             {props.group == 'KTHT' && <td key={'edit'}><button className={styles.edit_button} onClick={() => {edit(record)}}>edit</button></td>}
                             {props.group == 'KTHT' && <td key={'delete'}><button className={styles.delete_button} onClick={() => {deleteRecord(record)}}>delete</button></td>}

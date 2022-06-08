@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import styles from "../theme/EditModal.module.css"
 import dataService from '../services/data.service';
 import { AiFillWarning} from 'react-icons/ai';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const EditModal = ({ handleClose, show, children, record, update, setRecord }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
@@ -31,6 +33,15 @@ const EditModal = ({ handleClose, show, children, record, update, setRecord }) =
       dataService.updateData(input, navigate, update)
       setInput('')
       setRecord('')
+      toast('Record updated', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
       handleClose()
     }
     }
@@ -109,7 +120,8 @@ const EditModal = ({ handleClose, show, children, record, update, setRecord }) =
         }
     }
 
-    const closeModal = () => {
+    const closeModal = (e) => {
+        e.preventDefault();
         setInput('')
         setRecord('')
         handleClose()
