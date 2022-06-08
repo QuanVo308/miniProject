@@ -67,14 +67,26 @@ export default function Table(props) {
 
     const setSortPS = (header) => {
         // header = String(header)
-        console.log("e ", props.keys[props.headers.indexOf(header)])
-        console.log("e ", props.data[1][props.keys[props.headers.indexOf(header)]])
-        if(ascPS){
-            props.data.sort( (a,b) => String(a[props.keys[props.headers.indexOf(header)]]).localeCompare(String(b[props.keys[props.headers.indexOf(header)]])) )
+        // console.log("e ", props.keys[props.headers.indexOf(header)])
+        // console.log("e ", props.data[1][props.keys[props.headers.indexOf(header)]])
+        console.log(typeof(props.data[1][props.keys[props.headers.indexOf(header)]]))
+
+        if(typeof(props.data[1][props.keys[props.headers.indexOf(header)]]) == 'number') {
+            if(ascPS){
+                props.data.sort( (a,b) => a[props.keys[props.headers.indexOf(header)]] - b[props.keys[props.headers.indexOf(header)]])
+            } else {
+                props.data.sort( (a,b) => b[props.keys[props.headers.indexOf(header)]] - a[props.keys[props.headers.indexOf(header)]])
+            }
+            setAscPS( prev => !prev)
         } else {
-            props.data.sort( (a,b) => String(b[props.keys[props.headers.indexOf(header)]]).localeCompare(String(a[props.keys[props.headers.indexOf(header)]])))
+
+            if(ascPS){
+                props.data.sort( (a,b) => String(a[props.keys[props.headers.indexOf(header)]]).localeCompare(String(b[props.keys[props.headers.indexOf(header)]])))
+            } else {
+                props.data.sort( (a,b) => String(b[props.keys[props.headers.indexOf(header)]]).localeCompare(String(a[props.keys[props.headers.indexOf(header)]])))
+            }
+            setAscPS( prev => !prev)
         }
-        setAscPS( prev => !prev)
         console.log("ps")
     }
 
