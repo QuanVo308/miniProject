@@ -21,3 +21,7 @@ class SampleData(models.Model):
     patch_state = models.CharField(max_length=100, default="running")
     software_ver = models.CharField(max_length=100, default="S5720 V200R011C10SPC600")
     switch_type = models.CharField(max_length=100, default="S5720-28X-")
+
+
+    def __str__(self):
+        return self.ip
