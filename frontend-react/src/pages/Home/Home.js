@@ -71,7 +71,7 @@ const Home = ({user, setUser}) => {
 
         setInputPage(page)
         setUpdate(0)
-        console.log("setfind ", find)
+        // console.log("setfind ", find)
 
      }, [page, update, find, searchInput, reverse, sort])
 

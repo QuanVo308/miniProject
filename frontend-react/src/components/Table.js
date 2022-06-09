@@ -123,9 +123,9 @@ export default function Table(props) {
         if( e.target.value ==''){
             props.setFind(false)
             Object.entries(props.searchInput).map(
-                (e) => {
-                    if(e[1] != '' && e[0] != e.target.name){
-                        console.log("search", e)
+                (d) => {
+                    if(d[1] != '' && d[0] != e.target.name){
+                        console.log("search", d)
                         props.setFind(true)
                     }
                 }

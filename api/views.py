@@ -22,27 +22,28 @@ def index(request):
     data = SampleData.objects.filter(id = 780).values()
     return JsonResponse({"record": list(data)})
 
+def getRandomIP():
+    rand_num = random.randrange(0, 256)
+    ip = str(rand_num) + '.'
+    rand_num = random.randrange(0, 256)
+    ip += str(rand_num) + '.'
+    rand_num = random.randrange(0, 256)
+    ip += str(rand_num) + '.'
+    rand_num = random.randrange(0, 256)
+    ip += str(rand_num)
+    return ip
+
 @csrf_exempt
 def test(request):
-    search = json.loads(request.body.decode('utf-8'))
+    data = SampleData.objects.filter()
+    state=['running', 'terminating', 'initiating']
 
-    # data = SampleData.objects.get(id = new['id'])
-    s = Q()
-    # s &= Q(total_mac = 620)
-    for i in search:
-        # print(i)
-        if(search[i]):
-          s &= Q(('%s__startswith' % i, search[i]))
-
-    # print(s)
-    if(s != Q()):
-        # print(SampleData.objects.filter(s).values()[:10])
-        data = SampleData.objects.filter(s).values()[:30]
-    # print(data)
-    return JsonResponse({
-        "response": "ok",
-        "record": list(data),
-    })
+    for i in data:
+        setattr(i, 'patch_state', state[random.randrange(0,3)])
+        print(i, i.patch_state)
+        i.save()
+    
+    return HttpResponse(getRandomIP())
 
 @csrf_exempt
 def get_login_user(request):
