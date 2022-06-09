@@ -21,7 +21,9 @@ class dataService {
     getAll(props) {
         axios.get("http://localhost:8000/api/getdata", {
             params: {
-                page: props.page
+                page: props.page,
+                sort: props.sort,
+                reverse: props.reverse,
             }
         })
         .then( (res) => {
@@ -44,7 +46,7 @@ class dataService {
     addData(input, navigate) {
         axios.post("http://localhost:8000/api/add", input)
         .then( (res) => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data == 'ok'){
                 navigate('/')
             } else {
@@ -56,7 +58,7 @@ class dataService {
     updateData(input, navigate, setUpdate) {
         axios.post("http://localhost:8000/api/update", input)
         .then( (res) => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data == 'ok'){
                 // navigate('/')
                 setUpdate(1)
@@ -66,11 +68,19 @@ class dataService {
         })
     }
 
-    searchData(input, setUpdate, setSearchData) {
+    searchData(input, setUpdate, setSearchData, page, setMaxPage, sort, reverse) {
+        input = {...input, page, sort, reverse}
         axios.post("http://localhost:8000/api/search", input)
-        .then( (res) => {
-            console.log(res.data)
-            setSearchData(res.data.record)
+        .then( (res, err) => {
+            // console.log(res.data.response)
+            if(res.data.response == 'ok'){
+                // console.log("maxpage", res.data.maxpage)
+                setMaxPage(res.data.maxpage)
+                setSearchData(res.data.record)
+
+            } else {
+                setSearchData(null)
+            }
             // if(res.data == 'ok'){
             //     // navigate('/')
             // setUpdate(1)

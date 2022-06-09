@@ -31,8 +31,15 @@ export default function Table(props) {
         setDeleteModal(false)
         // setEditData(props.data[1])
         // console.log("edit", editData.id)
-        console.log("zxc", props.find)
+        // console.log("zxc", props.find)
     },[editData, props.find])
+
+    useEffect( () => {
+        props.setSort('id')
+        // setEditData(props.data[1])
+        // console.log("edit", editData.id)
+        // console.log("zxc", props.find)
+    },[])
 
     
     const showDeleteModal = () => {
@@ -71,24 +78,29 @@ export default function Table(props) {
         // header = String(header)
         // console.log("e ", props.keys[props.headers.indexOf(header)])
         // console.log("e ", props.data[1][props.keys[props.headers.indexOf(header)]])
-        console.log(typeof(props.data[1][props.keys[props.headers.indexOf(header)]]))
+        // console.log([props.keys[props.headers.indexOf(header)]])
 
-        if(typeof(props.data[1][props.keys[props.headers.indexOf(header)]]) == 'number') {
-            if(ascPS){
-                props.data.sort( (a,b) => a[props.keys[props.headers.indexOf(header)]] - b[props.keys[props.headers.indexOf(header)]])
-            } else {
-                props.data.sort( (a,b) => b[props.keys[props.headers.indexOf(header)]] - a[props.keys[props.headers.indexOf(header)]])
-            }
-            setAscPS( prev => !prev)
-        } else {
+        // props.setSort([props.keys[props.headers.indexOf(header)]])
+        props.setSort(props.keys[props.headers.indexOf(header)])
+        
+        props.setReverse(prev => !prev)
+        props.setPage(1)
+        // if(typeof(props.data[1][props.keys[props.headers.indexOf(header)]]) == 'number') {
+        //     if(ascPS){
+        //         props.data.sort( (a,b) => a[props.keys[props.headers.indexOf(header)]] - b[props.keys[props.headers.indexOf(header)]])
+        //     } else {
+        //         props.data.sort( (a,b) => b[props.keys[props.headers.indexOf(header)]] - a[props.keys[props.headers.indexOf(header)]])
+        //     }
+        //     setAscPS( prev => !prev)
+        // } else {
 
-            if(ascPS){
-                props.data.sort( (a,b) => String(a[props.keys[props.headers.indexOf(header)]]).localeCompare(String(b[props.keys[props.headers.indexOf(header)]])))
-            } else {
-                props.data.sort( (a,b) => String(b[props.keys[props.headers.indexOf(header)]]).localeCompare(String(a[props.keys[props.headers.indexOf(header)]])))
-            }
-            setAscPS( prev => !prev)
-        }
+        //     if(ascPS){
+        //         props.data.sort( (a,b) => String(a[props.keys[props.headers.indexOf(header)]]).localeCompare(String(b[props.keys[props.headers.indexOf(header)]])))
+        //     } else {
+        //         props.data.sort( (a,b) => String(b[props.keys[props.headers.indexOf(header)]]).localeCompare(String(a[props.keys[props.headers.indexOf(header)]])))
+        //     }
+        //     setAscPS( prev => !prev)
+        // }
     }
 
     const deleteRecord = (data) => {
@@ -104,10 +116,23 @@ export default function Table(props) {
         // }
     }
     const handleSearch = (e) => {
+        props.setFind(true)
         const name = e.target.name
         const value = e.target.value
         props.setSearchInput(inputs => ({...inputs, [name]: value }))
-        console.log("search input",props.searchInput)
+        if( e.target.value ==''){
+            props.setFind(false)
+            Object.entries(props.searchInput).map(
+                (e) => {
+                    if(e[1] != '' && e[0] != e.target.name){
+                        console.log("search", e)
+                        props.setFind(true)
+                    }
+                }
+            )
+        }
+        props.setPage(1)
+        // console.log("search input",props.searchInput)
         props.setUpdate(1)
     }
 
@@ -128,7 +153,7 @@ export default function Table(props) {
                 <thead>
                     <tr>
                         {props.headers.map( (header) => {
-                            return <th key={header} onClick={header == 'ID' ? setSortID :() => {setSortPS(header)} }>{header} {header == "ID" ? ascID == true ? <AiOutlineSortAscending/> : <AiOutlineSortDescending/> :  ascPS !== true ? <AiOutlineSortAscending/> : <AiOutlineSortDescending/> } </th>
+                            return <th key={header} onClick={header == 'ID' ? () => {setSortPS(header)}:() => {setSortPS(header)} }>{header} {header == "ID" ? ascID == true ? <AiOutlineSortAscending/> : <AiOutlineSortDescending/> :  ascPS !== true ? <AiOutlineSortAscending/> : <AiOutlineSortDescending/> } </th>
                         })}
                         {props.group == 'KTHT' && <th key={'edit'}>Edit</th>}
                         {props.group == 'KTHT' && <th key={'delete'}>Delete</th>}
@@ -136,13 +161,13 @@ export default function Table(props) {
                 </thead>
                 <tbody className={styles.tbody}>
 
-                    {props.find && <tr>
+                     <tr>
                             {props.keys.map( (k) => {
                                 return <td key={k} ><input className={styles.search_input} name={k} onChange = {handleSearch}></input></td>
                             })}
                             <td></td>
                             <td></td>
-                    </tr>}
+                    </tr>
                     
                     {props.data && props.data.map((record) => {
                         return <tr>
